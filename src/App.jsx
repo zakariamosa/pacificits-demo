@@ -161,12 +161,13 @@ function Register() {
       alert("Registration successful! Please login."); // This is a "good" popup, or you can auto-redirect
       navigate('/');
     } catch (err) {
-      if(err.response && err.response.data) {
-          // Display backend validation errors if available
-          setError("Registration failed. Email might be taken.");
-      } else {
-          setError("Something went wrong. Please try again.");
-      }
+      if (err.response?.data?.length) {
+    // ASP.NET Identity returns an array of errors
+    setError(err.response.data.map(e => e.description).join(" "));
+      } 
+  else {
+    setError("Registration failed. Please try again.");
+  }
     }
   };
 
